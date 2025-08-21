@@ -14,8 +14,7 @@ DualCameraPreview.enableDualMode = function (onSuccess, onError) {
 };
 
 DualCameraPreview.captureDual = function (onSuccess, onError) {
-  options = options || {};
-  exec(onSuccess, onError, PLUGIN_NAME, "captureDual");
+  exec(onSuccess, onError, PLUGIN_NAME, "captureDual", []);
 };
 
 DualCameraPreview.disableDualMode = function (onSuccess, onError) {
