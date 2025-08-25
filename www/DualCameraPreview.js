@@ -9,16 +9,16 @@ DualCameraPreview.deviceSupportDualMode = function (onSuccess, onError) {
   exec(onSuccess, onError, PLUGIN_NAME, "deviceSupportDualMode", []);
 };
 
-DualCameraPreview.enableDualMode = function (onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "enableDualMode", []);
+DualCameraPreview.enable = function (onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "enable", []);
 };
 
-DualCameraPreview.captureDual = function (onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "captureDual", []);
+DualCameraPreview.capture = function (onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "capture", []);
 };
 
-DualCameraPreview.disableDualMode = function (onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "disableDualMode", []);
+DualCameraPreview.disableDual = function (onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "disableDual", []);
 };
 
 DualCameraPreview.initVideoCallback = function (onSuccess, onError, callback) {
@@ -38,7 +38,7 @@ DualCameraPreview.initVideoCallback = function (onSuccess, onError, callback) {
         );
 }
 
-DualCameraPreview.startVideoCaptureDual = function (options, onSuccess, onError) {
+DualCameraPreview.startVideoCapture = function (options, onSuccess, onError) {
   if (!DualCameraPreview.videoCallback) {
     console.error("Call initVideoCallback first");
     onError("Call initVideoCallback first");
@@ -54,11 +54,11 @@ DualCameraPreview.startVideoCaptureDual = function (options, onSuccess, onError)
   options = options || {};
   options.recordWithAudio = options.recordWithAudio != null ? options.recordWithAudio : true;
   options.videoDurationMs = options.videoDurationMs != null ? options.videoDurationMs : 3000;
-  exec(onSuccess, onError, PLUGIN_NAME, "startVideoCaptureDual", [options]);
+  exec(onSuccess, onError, PLUGIN_NAME, "startVideoCapture", [options]);
 };
 
-DualCameraPreview.stopVideoCaptureDual = function (onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "stopVideoCaptureDual");
+DualCameraPreview.stopVideoCapture = function (onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "stopVideoCapture");
 };
 
 module.exports = DualCameraPreview;

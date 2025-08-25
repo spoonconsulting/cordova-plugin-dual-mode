@@ -25,8 +25,8 @@ import CoreLocation
         self.commandDelegate.send(pluginResult, callbackId: command.callbackId)
     }
 
-    @objc(enableDualMode:)
-    func enableDualMode(_ command: CDVInvokedUrlCommand) {
+    @objc(enable:)
+    func enable(_ command: CDVInvokedUrlCommand) {
         if isSessionEnabled {
             let pluginResult = CDVPluginResult(status: .error, messageAs: "Dual mode already enabled")
             self.commandDelegate.send(pluginResult, callbackId: command.callbackId)
@@ -92,8 +92,8 @@ import CoreLocation
         }
     }
 
-    @objc(disableDualMode:)
-    func disableDualMode(_ command: CDVInvokedUrlCommand) {
+    @objc(disable:)
+    func disable(_ command: CDVInvokedUrlCommand) {
         sessionQueue.async { [weak self] in
             guard let self = self else { return }
 
@@ -190,8 +190,8 @@ import CoreLocation
         return gps
     }
 
-    @objc(captureDual:)
-    func captureDual(_ command: CDVInvokedUrlCommand) {
+    @objc(capture:)
+    func capture(_ command: CDVInvokedUrlCommand) {
         guard isSessionEnabled,
               let sessionManager = sessionManager,
               sessionManager.isReady() else {
@@ -200,7 +200,7 @@ import CoreLocation
             return
         }
 
-        self.captureDualImagesWithCompletion {
+        self.captureImagesWithCompletion {
             [weak self] mergedImage, error in
             guard let self = self else { return }
             
@@ -281,7 +281,7 @@ import CoreLocation
             }
     }
 
-    @objc func captureDualImagesWithCompletion(_ completion: @escaping (UIImage?, Error?) -> Void) {
+    @objc func captureImagesWithCompletion(_ completion: @escaping (UIImage?, Error?) -> Void) {
         self.captureCompletion = completion
         self.latestFrontImage = nil
         self.latestBackImage = nil
@@ -418,8 +418,8 @@ import CoreLocation
         self.commandDelegate.send(pluginResult, callbackId: command.callbackId)
     }
     
-    @objc(startVideoCaptureDual:)
-     func startVideoCaptureDual(_ command: CDVInvokedUrlCommand) {
+    @objc(startVideoCapture:)
+     func startVideoCapture(_ command: CDVInvokedUrlCommand) {
         guard let options = command.arguments.first as? [String: Any] else {
             let errorResult = CDVPluginResult(status: .error, messageAs: "Missing options")!
             self.commandDelegate.send(errorResult, callbackId: command.callbackId)
@@ -457,7 +457,7 @@ import CoreLocation
         sessionQueue.async { [weak self] in
             guard let self = self else { return }
 
-            self.startDualVideoRecordingWithAudio(recordWithAudio, duration: videoDurationMs) { [weak self] (videoPath, thumbnailPath, error) in
+            self.startVideoRecordingWithAudio(recordWithAudio, duration: videoDurationMs) { [weak self] (videoPath, thumbnailPath, error) in
                 guard let self = self else { return }
                 if let error = error {
                     let errorResult = CDVPluginResult(status: .error, messageAs: error.localizedDescription)!
@@ -474,7 +474,7 @@ import CoreLocation
         }
     }
 
-    @objc func startDualVideoRecordingWithAudio(
+    @objc func startVideoRecordingWithAudio(
         _ recordWithAudio: Bool,
         duration: Int,
         completion: @escaping (String, String?, Error?) -> Void
@@ -530,8 +530,8 @@ import CoreLocation
         }
     }
     
-    @objc(stopVideoCaptureDual:)
-    func stopVideoCaptureDual(_ command: CDVInvokedUrlCommand) {
+    @objc(stopVideoCapture:)
+    func stopVideoCapture(_ command: CDVInvokedUrlCommand) {
         sessionQueue.async { [weak self] in
             guard let self = self else { return }
 
@@ -577,15 +577,15 @@ import CoreLocation
             self.recordingCompletion = nil
 
             if let error = err {
-                self.dualModeRecordingDidFail(withError: error)
+                self.recordingDidFail(withError: error)
             } else {
-                self.dualModeRecordingDidFinish(withVideoPath: path, thumbnailPath: thumb)
+                self.recordingDidFinish(withVideoPath: path, thumbnailPath: thumb)
             }
             self.videoRecorder = nil
         }
     }
 
-    @objc func dualModeRecordingDidFinish(withVideoPath videoPath: String, thumbnailPath: String?) {
+    @objc func recordingDidFinish(withVideoPath videoPath: String, thumbnailPath: String?) {
         let result: [String: Any] = [
             "nativePath": videoPath,
             "thumbnail": thumbnailPath ?? NSNull()
@@ -601,7 +601,7 @@ import CoreLocation
         }
     }
 
-    @objc func dualModeRecordingDidFail(withError error: Error) {
+    @objc func recordingDidFail(withError error: Error) {
         let pluginResult = CDVPluginResult(status: .error, messageAs: error.localizedDescription)!
         
         if let callbackId = self.videoCallbackContext?.callbackId {
