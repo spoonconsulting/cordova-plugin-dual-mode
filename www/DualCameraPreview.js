@@ -17,8 +17,8 @@ DualCameraPreview.capture = function (onSuccess, onError) {
   exec(onSuccess, onError, PLUGIN_NAME, "capture", []);
 };
 
-DualCameraPreview.disableDual = function (onSuccess, onError) {
-  exec(onSuccess, onError, PLUGIN_NAME, "disableDual", []);
+DualCameraPreview.disable = function (onSuccess, onError) {
+  exec(onSuccess, onError, PLUGIN_NAME, "disable", []);
 };
 
 DualCameraPreview.initVideoCallback = function (onSuccess, onError, callback) {
